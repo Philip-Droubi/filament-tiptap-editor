@@ -70,6 +70,13 @@ class MediaAction extends Action
                         ->imageCropAspectRatio($component->getImageCropAspectRatio())
                         ->imageResizeTargetWidth($component->getImageResizeTargetWidth())
                         ->imageResizeTargetHeight($component->getImageResizeTargetHeight())
+                        ->circleCropper($component->hasCircleCropper())
+                        ->imageEditor($component->hasImageEditor())
+                        ->imageEditorEmptyFillColor($component->getImageEditorEmptyFillColor())
+                        ->imageEditorMode($component->getImageEditorMode())
+                        ->imageEditorViewportHeight($component->getImageEditorViewportHeight())
+                        ->imageEditorViewportWidth($component->getImageEditorViewportWidth())
+                        ->imageEditorAspectRatios($component->getImageEditorAspectRatios())
                         ->required()
                         ->live()
                         ->afterStateUpdated(function (TemporaryUploadedFile $state, callable $set) {

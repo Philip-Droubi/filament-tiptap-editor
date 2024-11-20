@@ -73,6 +73,11 @@ return [
     'image_crop_aspect_ratio' => null,
     'image_resize_target_width' => null,
     'image_resize_target_height' => null,
+    'image_editor_empty_fill_color' => null,
+    'image_editor_mode' => 1,
+    'image_editor_viewport_height' => null,
+    'image_editor_viewport_width' => null,
+    'image_editor_aspect_ratios' => [],
     'use_relative_paths' => true,
 
     /*

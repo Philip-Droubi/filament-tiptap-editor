@@ -33,6 +33,20 @@ trait InteractsWithMedia
 
     protected string | Closure | null $visibility = null;
 
+    protected bool | Closure $hasCircleCropper = false;
+
+    protected bool | Closure $hasImageEditor = false;
+
+    protected string | Closure | null $imageEditorEmptyFillColor = null;
+
+    protected int $imageEditorMode = 1;
+
+    protected int | Closure | null $imageEditorViewportHeight = null;
+
+    protected int | Closure | null $imageEditorViewportWidth = null;
+
+    protected array | Closure $imageEditorAspectRatios = [];
+
     protected ?Closure $saveUploadedFileUsing = null;
 
     public function acceptedFileTypes(array $acceptedFileTypes): static
@@ -122,6 +136,64 @@ trait InteractsWithMedia
         return $this;
     }
 
+    public function circleCropper(bool | Closure $condition = true): static
+    {
+        $this->hasCircleCropper = $condition;
+
+        return $this;
+    }
+
+    public function imageEditor(bool | Closure $condition = true): static
+    {
+        $this->hasImageEditor = $condition;
+
+        return $this;
+    }
+
+    public function imageEditorEmptyFillColor(string | Closure | null $color): static
+    {
+        $this->imageEditorEmptyFillColor = $color;
+
+        return $this;
+    }
+
+    /**
+     * @param int $mode 1,2 or 3
+     * - 1: restrict the crop box not to exceed the size of the canvas (default).
+     * - 2: restrict the minimum canvas size to fit within the container. If the proportions of the canvas and the container differ, the minimum canvas will be surrounded by extra space in one of the dimensions.
+     * - 3: restrict the minimum canvas size to fill fit the container. If the proportions of the canvas and the container are different, the container will not be able to fit the whole canvas in one of the dimensions.
+     */
+    public function imageEditorMode(int $mode): static
+    {
+        $this->imageEditorMode = $mode;
+
+        return $this;
+    }
+
+    public function imageEditorViewportHeight(int $height): static
+    {
+        $this->imageEditorViewportHeight = $height;
+
+        return $this;
+    }
+
+    public function imageEditorViewportWidth(int $width): static
+    {
+        $this->imageEditorViewportWidth = $width;
+
+        return $this;
+    }
+
+    /**
+     * @param  array<?string> | Closure  $ratios
+     */
+    public function imageEditorAspectRatios(array | Closure $ratios): static
+    {
+        $this->imageEditorAspectRatios = $ratios;
+
+        return $this;
+    }
+
     public function saveUploadedFileUsing(?Closure $callback): static
     {
         $this->saveUploadedFileUsing = $callback;
@@ -185,6 +257,41 @@ trait InteractsWithMedia
     public function getVisibility(): string
     {
         return $this->visibility ? $this->evaluate($this->visibility) : config('filament-tiptap-editor.visibility');
+    }
+
+    public function hasCircleCropper(): bool
+    {
+        return (bool) $this->evaluate($this->hasCircleCropper);
+    }
+
+    public function hasImageEditor(): bool
+    {
+        return (bool) $this->evaluate($this->hasImageEditor);
+    }
+
+    public function getImageEditorEmptyFillColor(): ?string
+    {
+        return $this->imageEditorEmptyFillColor ? $this->evaluate($this->imageEditorEmptyFillColor) : config('filament-tiptap-editor.image_editor_empty_fill_color');
+    }
+
+    public function getImageEditorMode(): int
+    {
+        return in_array($this->imageEditorMode, [1,2,3]) ? $this->imageEditorMode : config('filament-tiptap-editor.image_editor_mode');
+    }
+
+    public function getImageEditorViewportHeight(): ?int
+    {
+        return $this->imageEditorViewportHeight ? $this->evaluate($this->imageEditorViewportHeight) : config('filament-tiptap-editor.image_editor_viewport_height');
+    }
+
+    public function getImageEditorViewportWidth(): ?int
+    {
+        return $this->imageEditorViewportWidth ? $this->evaluate($this->imageEditorViewportWidth) : config('filament-tiptap-editor.image_editor_viewport_width');
+    }
+
+    public function getImageEditorAspectRatios(): array
+    {
+        return $this->imageEditorAspectRatios ?? config('filament-tiptap-editor.image_editor_aspect_ratios');
     }
 
     public function getSaveUploadedFileUsing(): ?Closure
